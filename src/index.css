@@ -1,0 +1,15 @@
+/* Tailwind v4 single import */
+@import "tailwindcss";
+
+/* Optional: custom utilities */
+@layer utilities {
+  .app-gradient {
+    background-image: linear-gradient(to right, #38bdf8, #818cf8);
+  }
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
