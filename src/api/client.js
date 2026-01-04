@@ -1,7 +1,8 @@
 import { nowIso } from "../utils/utils";
 
-const API_BASE = "http://localhost:8000/api";
+// const API_BASE = "http://localhost:8000/api";
 // const API_BASE = "http://13.203.157.105:8000";
+const API_BASE = "https://g6lc3gscrfrxnh4prft5skcn3y0joluc.lambda-url.ap-south-1.on.aws/api";
 
 function toError(res, path) {
   const err = new Error(`${path} failed: ${res.status}`);
@@ -18,11 +19,17 @@ async function safeJson(res) {
   }
 }
 
+function normalizePath(path = "") {
+  // collapse accidental double slashes but leave query string intact
+  return path.replace(/([^:])\/\/+/, "$1/");
+}
+
 async function _fetch(path, options = {}, { timeoutMs = 60000 } = {}) {
   const ctrl = new AbortController();
   const to = setTimeout(() => ctrl.abort(), timeoutMs);
   try {
-    const res = await fetch(`${API_BASE}${path}`, {
+    const normalizedPath = normalizePath(path);
+    const res = await fetch(`${API_BASE}${normalizedPath}`, {
       cache: "no-store",
       ...options,
       signal: ctrl.signal,
@@ -58,7 +65,7 @@ export async function httpDelete(path) {
 }
 
 export async function getInsights() {
-  const raw = await httpGet("/insights/");
+  const raw = await httpGet("/insights");
   return (Array.isArray(raw) ? raw : []).map((it) => ({
     id: it.id,
     title: it.title,
@@ -71,7 +78,7 @@ export async function getInsights() {
 }
 
 export async function listChats() {
-  const raw = await httpGet(`/chats/?include_insight=false`);
+  const raw = await httpGet("/chats/?include_insight=false");
   return (Array.isArray(raw) ? raw : []).map((it) => ({
     id: it.chat_id,
     title: it.title,
