@@ -2,7 +2,7 @@ import { nowIso } from "../utils/utils";
 
 // const API_BASE = "http://localhost:8000/api";
 // const API_BASE = "http://13.203.157.105:8000";
-const API_BASE = "https://g6lc3gscrfrxnh4prft5skcn3y0joluc.lambda-url.ap-south-1.on.aws/api";
+const API_BASE = "https://luphbes5bzwn2avibfhyq7ng7a0iqjuj.lambda-url.eu-north-1.on.aws/api";
 
 function toError(res, path) {
   const err = new Error(`${path} failed: ${res.status}`);
